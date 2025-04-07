@@ -30,4 +30,22 @@ public class Sprite {
     public void interact() { //you can leave this empty
         // Default behavior (can be overridden by subclasses)
     }
+
+    public int[] getMagnitudeFrom(Sprite s) {
+        int xDiff = getX() - s.getX();
+        int yDiff = getY() - s.getY();
+        // If this is positive, then the sprite is to the left of what was called on
+        if (xDiff > 0) {
+            xDiff = -1;
+        } else if (xDiff < 0) {
+            xDiff = 1;
+        }
+        // If this is positive, then the sprite is above what was called on
+        if (yDiff > 0) {
+            yDiff = -1;
+        } else if (yDiff < 0) {
+            yDiff = 1;
+        }
+        return (new int[]{xDiff, yDiff});
+    }
 }

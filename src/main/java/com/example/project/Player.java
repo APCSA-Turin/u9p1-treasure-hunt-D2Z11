@@ -6,10 +6,15 @@ public class Player extends Sprite {
     private int numLives;
     private boolean win;
 
-    public Player(int x, int y) { // set treasureCount = 0 and numLives = 2
+    public Player(int x, int y) {
         super(x, y);
+
+        // set treasureCount = 0 and numLives = 2
+        treasureCount = 0;
         numLives = 2;
     }
+
+    // ## GETTERS AND SETTERS ##
 
     public int getTreasureCount() {
         return treasureCount;
@@ -91,6 +96,10 @@ public class Player extends Sprite {
                 break;
         }
         return false;
+    }
+
+    public void decreaseLives() {
+        numLives--;
     }
 
 }

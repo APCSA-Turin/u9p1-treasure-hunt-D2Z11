@@ -15,6 +15,7 @@ public class Grid {
         }
     }
 
+    // ## GETTERS AND SETTERS ##
     public Sprite[][] getGrid() {
         return grid;
     }

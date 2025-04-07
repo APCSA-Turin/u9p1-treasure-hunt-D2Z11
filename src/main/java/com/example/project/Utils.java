@@ -1,5 +1,7 @@
 package com.example.project;
 
+// Useless class - was thinking about using it
+
 public class Utils {
     public static boolean in(String[] arr, String target) {
         for (int i = 0; i < arr.length; i++) {
@@ -8,9 +10,5 @@ public class Utils {
             }
         }
         return false;
-    }
-
-    public static void isInput(String g) {
-        
     }
 }
