@@ -8,6 +8,7 @@ public class Grid {
     public Grid(int size) { // initialize and create a grid with all DOT objects
         grid = new Sprite[size][size];
         this.size = size;
+        // Insert a dot in every position of the grid
         for (int r = 0; r < size; r++) {
             for (int c = 0; c < size; c++) {
                 grid[r][c] = new Dot(r, c);
@@ -20,13 +21,14 @@ public class Grid {
         return grid;
     }
 
-    public void placeSprite(Sprite s) { // place sprite in new spot
-        // Convert from 2D Array to Carterian plane by subtracting y coordinate
-        // System.out.println(size + " - " + s.getY());
+    // Place sprite in new spot
+    public void placeSprite(Sprite s) {
+        // Convert from Carterian plane to 2D array coordinates by subtracting y coordinate and set that position to the sprite provided
         grid[(size - 1) - s.getY()][s.getX()] = s;
     }
 
-    public void placeSprite(Sprite s, String direction) { // place sprite in a new spot based on direction
+    // Place the sprite based on direction it will place an empty dot in the last position and place the sprite in the new position
+    public void placeSprite(Sprite s, String direction) {
         placeSprite(s);
         switch (direction.toLowerCase()) {
             case "w":
@@ -44,7 +46,9 @@ public class Grid {
         }
     }
 
-    public void display() { // print out the current grid to the screen
+    // print out the current grid to the screen
+    public void display() {
+        // Loop through entire grid and check each object type and put corresponding emoji
         for (int r = 0; r < size; r++) {
             for (int c = 0; c < size; c++) {
                 if (grid[r][c] instanceof Trophy) {
@@ -58,6 +62,7 @@ public class Grid {
                 } else if (grid[r][c] instanceof Enemy) {
                     System.out.print("🦂");
                 } else {
+                    // This is to check if something is not working here
                     System.out.print("⁉️");
                 }
             }

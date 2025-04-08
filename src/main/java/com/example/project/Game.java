@@ -18,6 +18,7 @@ public class Game {
         play();
     }
 
+    // Clear screen function
     public static void clearScreen() { // do not modify
         try {
             final String os = System.getProperty("os.name").toLowerCase();
@@ -35,13 +36,16 @@ public class Game {
         }
     }
 
+    // Check if a position is within the boundaries
     public boolean isValid(int x, int y) {
+        // Unlike the other isValid function in Sprite, it will check a position and not check what would happen if the player moved a certain direction
         if ((x < 0 || x > size + 1) || (y < 0 || y > size + 1)) {
             return false;
         }
         return true;
     }
 
+    // Check if a position has a empty position, or dot
     public boolean isEmptyPos(int x, int y) {
         if (getGridPos(x, y) instanceof Dot) {
             return true;
@@ -49,8 +53,7 @@ public class Game {
         return false;
     }
 
-    // Get a position in the grid by converting from coordinate plane to game
-    // coordinates
+    // Get a position in the grid by converting from Cartesian plane to 2D array format
     public Sprite getGridPos(int x, int y) {
         return grid.getGrid()[((size - 1) - y)][x];
     }
@@ -160,11 +163,11 @@ public class Game {
                     // Finally, place the sprite
                     grid.placeSprite(player, in);
                 }
-                // moveEnemies returns true if the enemy touches the player when moving
+                // moveEnemies returns true if the enemy touches the player when moving. If it is true, then we should decrease the player's lives
                 if (moveEnemies() == true) {
-                    scanner.next();
                     player.decreaseLives();
                 }
+                // If the lives is less than or zero then the loop can be ended and game over should be shown
                 if (player.getLives() <= 0) {
                     break;
                 }
@@ -191,13 +194,12 @@ public class Game {
 
     // Generates from min to max not including max
     private int randInt(int min, int max) {
+        // We learned this before - you get max - min, multiply by random and then add min and convert to int
         return (int) ((Math.random() * (max - min)) + min);
     }
 
+    // Initalize grid/game
     public void initialize() {
-        // to test, create a player, trophy, grid, treasure, and enemies. Then call
-        // placeSprite() to put them on the grid
-
         // Initialize game elements
         grid = new Grid(size);
         trophy = new Trophy(randInt(0, size), randInt(0, size));
@@ -207,13 +209,14 @@ public class Game {
 
         // Add trophy, player, treasures and enemies
         grid.placeSprite(trophy);
-        // System.out.println("Coords: " + player.getCoords());
         grid.placeSprite(player);
         for (int i = 0; i < treasures.length; i++) {
+            // Add treasures in random positions
             treasures[i] = new Treasure(randInt(0, size), randInt(0, size));
             grid.placeSprite(treasures[i]);
         }
         for (int i = 0; i < enemies.length; i++) {
+            // Add enemies in random positions
             enemies[i] = new Enemy(randInt(0, size), randInt(0, size));
             grid.placeSprite(enemies[i]);
         }
