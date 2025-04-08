@@ -10,6 +10,7 @@ public class Game {
     private Treasure[] treasures;
     private Trophy trophy;
     private int size;
+    private boolean hasWon;
 
     public Game(int size) { // the constructor should call initialize() and play()
         this.size = size;
@@ -39,7 +40,7 @@ public class Game {
     // Check if a position is within the boundaries
     public boolean isValid(int x, int y) {
         // Unlike the other isValid function in Sprite, it will check a position and not check what would happen if the player moved a certain direction
-        if ((x < 0 || x > size + 1) || (y < 0 || y > size + 1)) {
+        if ((x < 0 || x + 1 > size) || (y < 0 || y + 1 > size)) {
             return false;
         }
         return true;
@@ -60,6 +61,7 @@ public class Game {
 
     // Move enemies toward the player
     public boolean moveEnemies() {
+        clearScreen();
         boolean touchedPlayer = false;
         for (int i = 0; i < enemies.length; i++) {
             Enemy e = enemies[i];
@@ -92,7 +94,11 @@ public class Game {
             }
 
             // Just to ensure that any new position the enemy takes will be valid regardless
-            if (!isValid(newX, newY) || !isEmptyPos(newX, newY)) {
+            if (!isValid(newX, newY)) {
+                continue;
+            }
+            // If it's not an empty position, we have already tried to move to multiple positions in earlier statements so just don't move
+            if (!isEmptyPos(newX, newY)) {
                 continue;
             }
 
@@ -127,10 +133,16 @@ public class Game {
             // Quickly update for aesthetics
             grid.display();
             try {
-                Thread.sleep(100); // Wait for 1/10 seconds
+                Thread.sleep(500); // Wait for 1/10 seconds
             } catch (InterruptedException err) {
                 err.printStackTrace();
             }
+            // If it's the last iteration then we can skip printing and clearing
+            if (i == enemies.length - 1) {
+                continue;
+            }
+            System.out.println("Treasure count: " + player.getTreasureCount());
+            System.out.println("Lives: " + player.getLives());
             clearScreen();
         }
         return touchedPlayer;
@@ -171,6 +183,12 @@ public class Game {
                 if (player.getLives() <= 0) {
                     break;
                 }
+                // If the player win variable is true then the player has won!
+                if (player.getWin()) {
+                    // Set the won variable and break to go to game over/win screen
+                    hasWon = true;
+                    break;
+                }
 
                 try {
                     Thread.sleep(100); // Wait for 1/10 seconds
@@ -180,7 +198,13 @@ public class Game {
                 clearScreen(); // Clear the screen at the beggining of the while loop
             }
             // END LOGIC
-            System.out.println("Game over! Enter y to play again!");
+            if (hasWon) {
+                System.out.println("You won! Enter y to play again!");
+            } else {
+                System.out.println("Game over! Enter y to play again!");
+            }
+            // Reset hasWon
+            hasWon = false;
             // Exit function if y not entered
             if (!scanner.next().equals("y")) {
                 return;
